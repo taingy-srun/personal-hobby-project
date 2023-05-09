@@ -1,5 +1,5 @@
 require("dotenv").config();
-require("./data/dbconnection").open();
+require("./data/dbconnection");
 
 const express = require("express");
 const app = express();

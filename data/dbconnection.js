@@ -1,28 +1,16 @@
 const mongoose = require("mongoose");
 require("../models/album.model");
-const callbackify = require("util").callbackify;
 
-const mongooseConnectWithCallback = callbackify(function(url) {
-    return mongoose.connect(url);
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+
+mongoose.connection.on(process.env.DB_ON_CONNECTED, function() {
+    console.log(process.env.DB_ON_CONNECTED_MESSAGE, process.env.DB_NAME);
 });
 
-const open = function() {
-    mongooseConnectWithCallback(process.env.DB_URL, function(err, client) {
-        if (get() == null) {
-            if (err) {
-                console.log("connection error: ", err);
-            } else {
-                console.log("connected to db"); 
-            }
-        } 
-    });
-}
+mongoose.connection.on(process.env.DB_ON_DISCONNECTED, function() {
+    console.log(process.env.DB_ON_DISCONNECTED_MESSAGE, process.env.DB_NAME);
+});
 
-const get = function() {
-    return mongoose.connection;
-}
-
-module.exports = {
-    open,
-    get
-}
+mongoose.connection.on(process.env.DB_ON_ERROR, function() {
+    console.log(process.env.DB_ON_ERROR_MESSAGE, process.env.DB_NAME);
+});

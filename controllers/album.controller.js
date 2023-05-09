@@ -1,36 +1,45 @@
-const connection = require("../data/dbconnection").get();
 const mongoose = require("mongoose");
 const callbackify = require("util").callbackify;
 const Album = mongoose.model(process.env.ALBUM_MODEL);
 const ObjectId = mongoose.Types.ObjectId; 
 
-const findWithCallback = callbackify(function(offset, count) {
+const _findWithCallback = callbackify(function(offset, count) {
     return Album.find().skip(offset).limit(count).exec();
 });
 
-const findOneWithCallback = callbackify(function(id) {
+const _findOneWithCallback = callbackify(function(id) {
     return Album.findOne(new ObjectId(id)).exec();
 });
 
-const deleteOneWithCallback = callbackify(function(id) {
+const _deleteOneWithCallback = callbackify(function(id) {
     return Album.findByIdAndDelete(new ObjectId(id)).exec();
 });
 
-const insertOneWithCallback = callbackify(function(album) {
+const _insertOneWithCallback = callbackify(function(album) {
     return Album.create(album);
 });
 
-const updateOneWithCallback = callbackify(function(id, album) {
-    return Album.findOneAndUpdate(new ObjectId(id), album);
+const _saveWithCallback = callbackify(function(album) {
+    return album.save();
 });
 
-const findAlbumSongsWithCallback = callbackify(function(id) {
+const _findAlbumSongsWithCallback = callbackify(function(id) {
     return Album.findOne(new ObjectId(id)).select(process.env.SONG_COLLECTION).exec();
 });
 
-const updateSongWithCallback = callbackify(function(id) {
+const _updateSongWithCallback = callbackify(function(id) {
     return Album.findOne(new ObjectId(id)).select(process.env.SONG_COLLECTION).exec();
 });
+
+const _sendErrorResponse = function(res, err) {
+    res.status(parseInt(process.env.HTTP_ERROR));
+    res.json({message: err.message});
+}
+
+const _sendResponse = function(res, res_code, message) {
+    res.status(parseInt(res_code));
+    res.json(message);
+}
 
 const getAll = function(req, res) {
     let offset = process.env.DEFAULT_OFFSET;
@@ -42,61 +51,42 @@ const getAll = function(req, res) {
         count = parseInt(req.query.count);
     }
     if (count > parseInt(process.env.MAX_COUNT)) {
-        res.status(parseInt(process.env.HTTP_BAD_REQUEST));
-        res.json({message: process.env.HTTP_BAD_REQUEST_MESSAGE_EXCEED_COUNT});
+        _sendResponse(res, process.env.HTTP_BAD_REQUEST, { message: process.env.HTTP_BAD_REQUEST_MESSAGE_EXCEED_COUNT });
         return;
     }
 
-    findWithCallback(offset, count, function(err, albums) {
+    _findWithCallback(offset, count, function(err, albums) {
         if (err) {
-            console.log(err);
-            res.status(parseInt(process.env.HTTP_ERROR));
-            res.json({message: process.env.HTTP_ERROR_MESSAGE});
+            _sendErrorResponse(res, err);
         } else {
-            res.status(parseInt(process.env.HTTP_OK));
-            res.json(albums);
+            _sendResponse(res, process.env.HTTP_OK, albums);
         }
     });
 };
 
-
 const getOne = function(req, res) {
-    findOneWithCallback(req.params.id, function(err, album) {
+    _findOneWithCallback(req.params.id, function(err, album) {
         if (err) {
-            console.log(err);
-            res.status(parseInt(process.env.HTTP_ERROR));
-            res.json({message: process.env.HTTP_ERROR_MESSAGE});
+            _sendErrorResponse(res, err);
+        } else if (!album) {
+            _sendResponse(res, process.env.HTTP_NOT_FOUND, {message: process.env.HTTP_ALBUM_NOT_FOUND_MESSAGE});
         } else {
-            if (album) {
-                res.status(parseInt(process.env.HTTP_OK));
-                res.json(album);
-            } else {
-                res.status(parseInt(process.env.HTTP_NOT_FOUND));
-                res.json({message: process.env.HTTP_ALBUM_NOT_FOUND_MESSAGE});
-            }
+            _sendResponse(res, process.env.HTTP_OK, album);
         }
     });
 }
-
 
 const deleteOne = function(req, res) {
-    deleteOneWithCallback(req.params.id, function(err, album) {
+    _deleteOneWithCallback(req.params.id, function(err, album) {
         if (err) {
-            console.log(err);
-            res.status(parseInt(process.env.HTTP_ERROR));
-            res.json({message: process.env.HTTP_ERROR_MESSAGE});
+            _sendErrorResponse(res, err);
+        } else if (!album) {
+            _sendResponse(res, process.env.HTTP_NOT_FOUND, {message: process.env.HTTP_ALBUM_NOT_FOUND_MESSAGE});
         } else {
-            if (!album) {
-                res.status(parseInt(process.env.HTTP_NOT_FOUND));
-                res.json({message: process.env.HTTP_ALBUM_NOT_FOUND_MESSAGE});
-            } else {
-                res.status(parseInt(process.env.HTTP_OK));
-                res.json({message : process.env.HTTP_OK_MESSAGE});
-            }
+            _sendResponse(res, process.env.HTTP_OK, {message : process.env.ALBUM_DELETED_MESSAGE});
         }
     });
 }
-
 
 const addOne = function(req, res) {
     const newAlbum = {
@@ -105,112 +95,176 @@ const addOne = function(req, res) {
         numberOfSongs: req.body.numberOfSongs,
         songs: req.body.songs
     }
-    insertOneWithCallback(newAlbum, function(err, album) {
+    _insertOneWithCallback(newAlbum, function(err, album) {
         if (err) {
-            console.log(err.message);
-            res.status(parseInt(process.env.HTTP_BAD_REQUEST));
-            res.json({message: err.message});
+            _sendErrorResponse(res, err);
         } else {
-            res.status(parseInt(process.env.HTTP_OK));
-            res.json({message : process.env.HTTP_OK_MESSAGE});
+            _sendResponse(res, process.env.HTTP_OK, {message : process.env.ALBUM_ADDED_MESSAGE});
+        }
+    });
+}
+
+const _updateOne = function(req, res, updateOneCallback) {
+    _findOneWithCallback(req.params.id, function(err, album) {
+        if (err) {
+            _sendErrorResponse(res, err);
+        } else if (!album) {
+            _sendResponse(res, process.env.HTTP_NOT_FOUND, {message: process.env.HTTP_ALBUM_NOT_FOUND_MESSAGE});
+        } else {
+            updateOneCallback(req, res, album);
+        }
+    });
+}
+
+const _fullUpdateOne = function(req, res, album) {
+    album.title = req.body.title;
+    album.releaseDate = req.body.releaseDate;
+    album.songs = req.body.songs
+
+    _saveWithCallback(album, function(err, saved){
+        if (err) {
+            _sendErrorResponse(res, err);
+        } else {
+            _sendResponse(res, process.env.HTTP_OK, {message: process.env.ALBUM_UPDATED_MESSAGE});
         }
     });
 }
 
 const fullUpdateOne = function(req, res) {
-    const updateAlbum = {
-        title: req.body.title,
-        releaseDate: req.body.releaseDate,
-        numberOfSongs: req.body.numberOfSongs,
-        songs:  req.body.songs
-    }
-    updateOneWithCallback(req.params.id, updateAlbum, function(err, album) {
+    _updateOne(req, res, _fullUpdateOne);
+}
+
+const _partialUpdateOne = function(req, res, album) {
+    if (req.body.title) { album.title = req.body.title; }
+    if (req.body.releaseDate) { album.releaseDate = req.body.releaseDate; }
+    if (req.body.songs) { album.songs = req.body.songs }
+
+    _saveWithCallback(album, function(err, saved){
         if (err) {
-            console.log(err.message);
-            res.status(parseInt(process.env.HTTP_BAD_REQUEST));
-            res.json({message: err.message});
+            _sendErrorResponse(res, err);
         } else {
-            res.status(parseInt(process.env.HTTP_OK));
-            res.json({message : process.env.HTTP_OK_MESSAGE});
+            _sendResponse(res, process.env.HTTP_OK, {message: process.env.ALBUM_UPDATED_MESSAGE});
         }
     });
 }
 
 const partialUpdateOne = function(req, res) {
-    const updateAlbum = {
-        title: req.body.title,
-        releaseDate: req.body.releaseDate,
-        numberOfSongs: req.body.numberOfSongs,
-        songs:  req.body.songs
-    }
-    updateOneWithCallback(req.params.id, updateAlbum, function(err, album) {
-        if (err) {
-            console.log(err.message);
-            res.status(parseInt(process.env.HTTP_BAD_REQUEST));
-            res.json({message: err.message});
-        } else {
-            res.status(parseInt(process.env.HTTP_OK));
-            res.json({message : process.env.HTTP_OK_MESSAGE});
-        }
-    });
+    _updateOne(req, res, _partialUpdateOne);
 }
 
 const getAlbumSongs = function(req, res) {
-    findAlbumSongsWithCallback(req.params.id, function(err, songs) {
+    _findAlbumSongsWithCallback(req.params.id, function(err, songs) {
         if (err) {
-            console.log(err);
-            res.status(parseInt(process.env.HTTP_ERROR));
-            res.json({message: process.env.HTTP_ERROR_MESSAGE});
+            _sendErrorResponse(res, err);
+        } else if (!songs) {
+            _sendResponse(res, process.env.HTTP_NOT_FOUND, {message: process.env.HTTP_ALBUM_NOT_FOUND_MESSAGE});
         } else {
-            if (songs) {
-                res.status(parseInt(process.env.HTTP_OK));
-                res.json(songs);
-            } else {
-                res.status(parseInt(process.env.HTTP_NOT_FOUND));
-                res.json({message: process.env.HTTP_ALBUM_NOT_FOUND_MESSAGE});
-            }
+            _sendResponse(res, process.env.HTTP_OK, songs);
         }
     });
 }
 
 const getOneSong = function(req, res) {
-    findOneWithCallback(req.params.id, function(err, album) {   
+    _findOneWithCallback(req.params.id, function(err, album) {   
         if (err) {
-            console.log(err);
-            res.status(parseInt(process.env.HTTP_ERROR));
-            res.json({message: process.env.HTTP_ERROR_MESSAGE});
+            _sendErrorResponse(res, err);
+        } else if (album && album.songs.id(req.params.songId)) {
+            _sendResponse(res, process.env.HTTP_OK, album.songs.id(req.params.songId));
         } else {
-            if (album && album.songs.id(req.params.songId)) {
-                res.status(parseInt(process.env.HTTP_OK));
-                res.json(album.songs.id(req.params.songId));
-            } else {
-                res.status(parseInt(process.env.HTTP_NOT_FOUND));
-                res.json({message: process.env.HTTP_SONG_NOT_FOUND_MESSAGE});
-            }
+            _sendResponse(res, process.env.HTTP_NOT_FOUND, {message: process.env.HTTP_SONG_NOT_FOUND_MESSAGE});
         }
     });
 }
 
-const updateOneSong = function(req, res) {
+const _updateOneSong = function(req, res, updateOneSongCallback) {
+    _updateSongWithCallback(req.params.id, function(err, album) {   
+        if (err) {
+            _sendErrorResponse(res, err);
+        } else if (!album || !album.songs.id(req.params.songId)) {
+            _sendResponse(res, process.env.HTTP_NOT_FOUND, {message: process.env.HTTP_SONG_NOT_FOUND_MESSAGE});
+        } else {
+            updateOneSongCallback(req, res, album);
+        }
+    });
+}
+
+const fullUpdateOneSong = function(req, res) {
+    _updateOneSong(req, res, _fullUpdateOneSong);
+}
+
+const _fullUpdateOneSong = function(req, res, album) {
     const song = {
         title: req.body.title,
         duration: req.body.duration
     }
-    updateSongWithCallback(req.params.id, function(err, album) {   
+    album.songs.id(req.params.songId).set(song);
+    _saveWithCallback(album, function(err, album) {
         if (err) {
-            console.log(err);
-            res.status(parseInt(process.env.HTTP_ERROR));
-            res.json({message: process.env.HTTP_ERROR_MESSAGE});
+            _sendErrorResponse(res, err);
         } else {
-            if (album && album.songs.id(req.params.songId)) {
-                /// to be updated
-                album.songs.id(req.params.songId).save(song);
-                res.status(parseInt(process.env.HTTP_OK));
-                res.json(album);
-            } else {
-                res.status(parseInt(process.env.HTTP_NOT_FOUND));
-                res.json({message: process.env.HTTP_SONG_NOT_FOUND_MESSAGE});
-            }
+            _sendResponse(res, process.env.HTTP_OK, {message: process.env.SONG_UPDATED_MESSAGE});
+        }
+    });
+}
+
+const partialUpdateOneSong = function(req, res) {
+    _updateOneSong(req, res, _partialUpdateOneSong);
+}
+
+const _partialUpdateOneSong = function(req, res, album) {
+    const song = album.songs.id(req.params.songId);
+    if (req.body.title) { song.title = req.body.title }
+    if (req.body.duration) { song.duration = req.body.duration }
+
+    album.songs.id(req.params.songId).set(song);
+    _saveWithCallback(album, function(err, album) {
+        if (err) {
+            _sendErrorResponse(res, err);
+        } else {
+            _sendResponse(res, process.env.HTTP_OK, {message: process.env.SONG_UPDATED_MESSAGE});
+        }
+    });
+}
+
+const deleteOneSong = function(req, res) {
+    _findOneWithCallback(req.params.id, function(err, album) {   
+        if (err) {
+            _sendErrorResponse(res, err);
+        } else if (album && album.songs.id(req.params.songId)) {
+            const song = album.songs.id(req.params.songId);
+            album.songs.remove(song);
+            _saveWithCallback(album, function(err, album) {
+                if (err) {
+                    _sendErrorResponse(res, err);
+                } else {
+                    _sendResponse(res, process.env.HTTP_OK, {message: process.env.SONG_DELETED_MESSAGE});
+                }
+            });
+        } else {
+            _sendResponse(res, process.env.HTTP_NOT_FOUND, {message: process.env.HTTP_SONG_NOT_FOUND_MESSAGE});
+        }
+    });
+}
+
+const addOneSong = function(req, res) {
+    const song = {
+        title: req.body.title,
+        duration: req.body.duration
+    }
+    _findOneWithCallback(req.params.id, function(err, album) {   
+        if (err) {
+            _sendErrorResponse(res, err);
+        } else if (!album) {
+            _sendResponse(res, process.env.HTTP_NOT_FOUND, {message: process.env.HTTP_ALBUM_NOT_FOUND_MESSAGE});
+        } else {
+            album.songs.push(song);
+            _saveWithCallback(album, function(err, album) {
+                if (err) {
+                    _sendErrorResponse(res, err);
+                } else {
+                    _sendResponse(res, process.env.HTTP_OK, {message: process.env.SONG_ADDED_MESSAGE});
+                }
+            });
         }
     });
 }
@@ -224,5 +278,8 @@ module.exports = {
     deleteOne,
     getAlbumSongs,
     getOneSong,
-    updateOneSong
+    addOneSong,
+    fullUpdateOneSong,
+    partialUpdateOneSong,
+    deleteOneSong
 }

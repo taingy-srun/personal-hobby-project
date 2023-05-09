@@ -12,10 +12,13 @@ router.route("/albums/:id")
     .delete(albumController.deleteOne);
 
 router.route("/albums/:id/songs")
-    .get(albumController.getAlbumSongs);
+    .get(albumController.getAlbumSongs)
+    .post(albumController.addOneSong);
 
 router.route("/albums/:id/songs/:songId")
     .get(albumController.getOneSong)
-    .put(albumController.updateOneSong);
+    .put(albumController.fullUpdateOneSong)
+    .patch(albumController.partialUpdateOneSong)
+    .delete(albumController.deleteOneSong);
 
 module.exports = router;
