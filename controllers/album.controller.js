@@ -27,10 +27,6 @@ const _findAlbumSongsWithCallback = callbackify(function(id) {
     return Album.findOne(new ObjectId(id)).select(process.env.SONG_COLLECTION).exec();
 });
 
-const _updateSongWithCallback = callbackify(function(id) {
-    return Album.findOne(new ObjectId(id)).select(process.env.SONG_COLLECTION).exec();
-});
-
 const _sendErrorResponse = function(res, err) {
     res.status(parseInt(process.env.HTTP_ERROR));
     res.json({message: err.message});
@@ -177,7 +173,7 @@ const getOneSong = function(req, res) {
 }
 
 const _updateOneSong = function(req, res, updateOneSongCallback) {
-    _updateSongWithCallback(req.params.id, function(err, album) {   
+    _findAlbumSongsWithCallback(req.params.id, function(err, album) {   
         if (err) {
             _sendErrorResponse(res, err);
         } else if (!album || !album.songs.id(req.params.songId)) {
