@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const albumController = require("./controllers/album.controller");
+const albumController = require("../controllers/album.controller");
 
 router.route("/albums")
     .get(albumController.getAll)

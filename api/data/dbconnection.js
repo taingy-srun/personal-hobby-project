@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-require("../models/album.model");
+require("../data/models/album.model");
 
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
