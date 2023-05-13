@@ -1,1 +1,9 @@
-<p>albums works!</p>
+<div class="album">
+    <button routerLink="/newAlbum" type="button" class="btn btn-danger">Add New Album</button>
+    <br/>
+    <br/>
+    <h3>List of Albums: </h3>
+    <ul>
+        <li *ngFor="let album of albums"><a routerLink="/albums/{{album._id}}"> {{ album.title }} </a></li>
+    </ul>
+</div>

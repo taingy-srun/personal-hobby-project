@@ -1,5 +1,7 @@
+import { AddingAlbumComponent } from "./adding-album/adding-album.component";
 import { AlbumComponent } from "./album/album.component";
 import { AlbumsComponent } from "./albums/albums.component";
+import { ErrorPageComponent } from "./error-page/error-page.component";
 import { HomeComponent } from "./home/home.component";
 
 export const AppRouter = [
@@ -8,11 +10,19 @@ export const AppRouter = [
         component: HomeComponent
     },
     {
-        path: "ablums",
+        path: "albums",
         component: AlbumsComponent
     },
     {
-        path: "ablums/:albumId",
+        path: "albums/:albumId",
         component: AlbumComponent
+    },
+    {
+        path: "newAlbum",
+        component: AddingAlbumComponent
+    },
+    {
+        path: "**",
+        component: ErrorPageComponent
     }
 ];
