@@ -27,4 +27,14 @@ export class AlbumsDataService {
   public addOne(album: any): Observable<Album> {
     return this._http.post<Album>(this._baseUrl, album);
   }
+
+  public addOneSong(_albumId: string, song: any): Observable<Album> {
+    const url: string = this._baseUrl + "/" + _albumId + "/songs"
+    return this._http.post<Album>(url, song);
+  }
+
+  public deleteOneSong(_albumId: string, songId: string): Observable<Album> {
+    const url: string = this._baseUrl + "/" + _albumId + "/songs/" + songId;
+    return this._http.delete<Album>(url);
+  }
 }

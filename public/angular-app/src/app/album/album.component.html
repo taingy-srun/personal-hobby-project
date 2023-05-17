@@ -3,9 +3,12 @@
     <h3> Released Date: {{ album.releaseDate | date: "dd MMMM YYYY" }} </h3>
     <h4> List of Songs: </h4>
     <ol>
-        <li *ngFor="let song of album.songs"> {{ song.title }} </li>
+        <li *ngFor="let song of album.songs"> {{ song.title }} &nbsp; <i><a (click)="deleteOneSong(song._id)">Delete</a></i></li>
     </ol>
     <br/>
     <br/>
     <button routerLink="/albums"> < Back</button>
+    &nbsp;&nbsp;
+    <button> Add New Song</button><br/><br/>
+    <app-add-song [albumId]="album._id"></app-add-song>
 </div>

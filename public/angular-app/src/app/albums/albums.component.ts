@@ -2,9 +2,13 @@ import { Component } from '@angular/core';
 import { AlbumsDataService } from '../albums-data.service';
 
 class Song {
+  #_id!: string;
   #title!: string;
   #duration!: number;
 
+  get _id(): string {
+    return this.#_id;
+  }
   get title(): string {
     return this.#title;
   }

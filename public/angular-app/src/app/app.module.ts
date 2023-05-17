@@ -13,7 +13,10 @@ import { AlbumsComponent } from './albums/albums.component';
 import { AlbumComponent } from './album/album.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AddingAlbumComponent } from './adding-album/adding-album.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { AddSongComponent } from './add-song/add-song.component';
 
 @NgModule({
   declarations: [
@@ -25,13 +28,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     AlbumsComponent,
     AlbumComponent,
     ErrorPageComponent,
-    AddingAlbumComponent
+    AddingAlbumComponent,
+    RegisterComponent,
+    LoginComponent,
+    AddSongComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(AppRouter),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,10 @@
+<div class="album">
+    <h2>Registration Form</h2><br/>
+    <form #registerForm="ngForm" (ngSubmit)="register()">
+        <label>Name: <input name="name" placeholder="your name" [ngModel]="name"/></label><br/><br/>
+        <label>Username: <input name="username" placeholder="username" [ngModel]="username"/></label><br/><br/>
+        <label>Password: <input name="password" placeholder="password" [ngModel]="password"/></label><br/><br/>
+        <label>Confirm Password: <input name="confirmPassword" placeholder="confirm password" [ngModel]="confirmPassword"/></label><br/><br/>
+        <button type="submit">Register</button>
+    </form>
+</div>

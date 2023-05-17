@@ -15,6 +15,10 @@ export class AlbumComponent {
   constructor(private _albumService: AlbumsDataService, private _route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.getAlbum();
+  }
+
+  private getAlbum() {
     const _id = this._route.snapshot.params["albumId"];
     this._albumService.getOne(_id).subscribe({
         next: (album) => {
@@ -28,4 +32,17 @@ export class AlbumComponent {
         }
     });
   }
+
+  public deleteOneSong(songId: string) {
+    const albumId = this._route.snapshot.params["albumId"];
+    this._albumService.deleteOneSong(albumId, songId).subscribe({
+        next: (album) => {
+          this.ngOnInit();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+    });
+  }
+
 }

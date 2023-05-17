@@ -1,0 +1,8 @@
+<div class="album">
+    <h2>Login Form</h2><br/>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <label>Username: <input formControlName="username" placeholder="username" /></label><br/><br/>
+        <label>Password: <input formControlName="password" placeholder="password" /></label><br/><br/>
+        <button type="submit">Login</button>
+    </form>
+</div>

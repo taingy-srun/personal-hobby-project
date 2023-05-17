@@ -1,0 +1,6 @@
+<h3>Adding New Song</h3>
+<br/>
+<form [formGroup]="newSongForm" (ngSubmit)="add(newSongForm)">
+    <label>Title: <input formControlName="title" placeholder="Title"/></label><br/><br/>
+    <button type="submit"> Add </button>
+</form>
