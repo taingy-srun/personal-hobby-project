@@ -55,21 +55,77 @@ export class AlbumsComponent {
 
   albums!: Album[];
 
-  constructor(private _albumService: AlbumsDataService) {
+  offset: number = 0;
+  count: number = 5;
 
-  }
+  constructor(private _albumService: AlbumsDataService) {}
 
   ngOnInit(): void {
-    this._albumService.getAll().subscribe({
-        next: (albums) => {
-          this.albums = albums;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => {
-          console.log("On complete");
-        }
+    this.getAlbums();
+  }
+
+  public getAlbums() {
+    this._albumService.getByPage(this.offset, this.count).subscribe({
+      next: (albums) => {
+        this.albums = albums;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log("On complete");
+      }
+  });
+  }
+
+  public getNextPage() {
+    this.setNextPageValue();
+    this.getAlbums();
+  }
+
+  public getPreviousPage() {
+    this.setPreviousPageValue();
+    this.getAlbums();
+  }
+
+  private setNextPageValue() {
+    this.offset += this.count;
+  }
+
+  private setPreviousPageValue() {   
+    if (this.offset > 0) {
+      this.offset -= this.count;
+    } else {
+      this.offset = 0;
+    }
+
+    if (this.offset < 0) {
+      this.offset = 0;
+    }
+  }
+
+  public disablePreviousButton():boolean {
+      return this.offset == 0;
+  }
+
+  public disableNextButton():boolean {
+    if (!this.albums) {
+      return false;
+    }
+    return this.albums.length < 5;
+  }
+
+  public delete(id: string) {
+    this._albumService.deleteOne(id).subscribe({
+      next: (deleted) => {
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log("On complete");
+      }
     });
   }
 }

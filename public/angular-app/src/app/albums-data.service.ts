@@ -12,8 +12,8 @@ export class AlbumsDataService {
   _baseUrl:string = "http://localhost:3000/api/albums";
   constructor(private _http: HttpClient) {}
 
-  public getAll(): Observable<Album[]> {
-    return this._http.get<Album[]>(this._baseUrl);
+  public getByPage(offset: number, count: number): Observable<Album[]> {
+    return this._http.get<Album[]>(this._baseUrl + "?offset=" + offset + "&count=" + count);
   }
 
   public getOne(_id: string): Observable<Album> {
@@ -22,5 +22,9 @@ export class AlbumsDataService {
 
   public deleteOne(_id: string): Observable<Album> {
     return this._http.delete<Album>(this._baseUrl + "/" + _id);
+  }
+
+  public addOne(album: any): Observable<Album> {
+    return this._http.post<Album>(this._baseUrl, album);
   }
 }

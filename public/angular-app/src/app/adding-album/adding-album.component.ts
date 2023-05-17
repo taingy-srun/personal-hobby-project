@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AlbumsDataService } from '../albums-data.service';
+import { Album } from '../albums/albums.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-adding-album',
@@ -10,7 +13,7 @@ export class AddingAlbumComponent {
 
   newAlbumForm!: FormGroup;
 
-  constructor(){}
+  constructor(private _albumService: AlbumsDataService, private _router: Router){}
 
   ngOnInit() {
     this.newAlbumForm = new FormGroup({
@@ -20,6 +23,18 @@ export class AddingAlbumComponent {
   }
 
   public add(form: FormGroup){
-    console.log(form.value);
+    const newAlbum = {
+      title: form.value["title"],
+      releaseDate: form.value["releaseDate"]
+    }
+
+    this._albumService.addOne(newAlbum).subscribe((next) => {
+        this.gotoAlbumsPage();
+    });
   }
+
+  public gotoAlbumsPage(): void {
+    this._router.navigate(["/albums"]);
+  }
+
 }

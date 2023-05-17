@@ -1,9 +1,10 @@
 <div class="album">
-    <button routerLink="/newAlbum" type="button" class="btn btn-danger">Add New Album</button>
-    <br/>
     <br/>
     <h3>List of Albums: </h3>
     <ul>
-        <li *ngFor="let album of albums"><a routerLink="/albums/{{album._id}}"> {{ album.title }} </a></li>
+        <li *ngFor="let album of albums"><a routerLink="/albums/{{album._id}}"> {{ album.title }} </a> &nbsp;&nbsp; Released Date: {{ album.releaseDate | date: "dd-MM-yyyy"}} &nbsp;<button (click)="delete(album._id)">Delete</button></li>
     </ul>
+    <br/>
+    <button (click)="getPreviousPage()" [disabled]="disablePreviousButton()">< Previous</button>
+    <button (click)="getNextPage()" [disabled]="disableNextButton()">Next ></button>
 </div>
