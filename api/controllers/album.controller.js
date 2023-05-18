@@ -1,24 +1,11 @@
 const { response } = require("express");
 const mongoose = require("mongoose");
 const Album = mongoose.model(process.env.ALBUM_MODEL);
+const ResponseUtils = require("../utils/response.utils")
 
-const _createResponse = function(status, message) {
-    const response = {
-        status: status,
-        message: message
-    }
-    return response;
-}
-
-const _setResponse = function(response, status, message) {
-    response.status = status;
-    response.message = message;
-}
-
-const _sendResponse = function(res, response) {
-    res.status(parseInt(response.status));
-    res.json(response.message);
-}
+const _createResponse = ResponseUtils.createResponse;
+const _setResponse = ResponseUtils.setResponse;
+const _sendResponse = ResponseUtils.sendResponse;
 
 const _checkAlbumExist = function(album) {
     return new Promise((resolve, reject) => {
@@ -136,7 +123,6 @@ const _partialUpdateOne = function(req, res, album, response) {
 const partialUpdateOne = function(req, res) {
     _updateOne(req, res, _partialUpdateOne);
 }
-
 
 const getAlbumSongs = function(req, res) {
     const response = _createResponse();
