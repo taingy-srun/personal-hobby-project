@@ -11,6 +11,15 @@ const setResponse = function(response, status, message) {
     response.message = message;
 }
 
+const setResponseCode = function(response, status) {
+    response.status = status;
+}
+
+const setErrorResponse = function(response, message) {
+    response.status = response.status ? response.status : process.env.HTTP_ERROR;
+    response.message = message;
+}
+
 const sendResponse = function(res, response) {
     res.status(parseInt(response.status));
     res.json(response.message);
@@ -19,5 +28,7 @@ const sendResponse = function(res, response) {
 module.exports = {
     createResponse,
     setResponse,
+    setResponseCode,
+    setErrorResponse,
     sendResponse
 }

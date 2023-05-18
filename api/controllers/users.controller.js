@@ -2,20 +2,22 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = mongoose.model(process.env.USER_MODEL);
 const ResponseUtils = require("../utils/response.utils");
-const { setResponse } = require("../utils/response.utils");
-const { response } = require("express");
 
 const _createResponse = ResponseUtils.createResponse;
 const _setResponse = ResponseUtils.setResponse;
+const _setResponseCode = ResponseUtils.setResponseCode;
+const _setErrorResponse = ResponseUtils.setErrorResponse;
 const _sendResponse = ResponseUtils.sendResponse;
 
-
-const getAll = function(req, res) {
-    const response = _createResponse();
-    User.find().exec()
-        .then((users) => _setResponse(response, process.env.HTTP_OK, users))
-        .catch((error) => _setResponse(response, process.env.HTTP_ERROR, { message: error.message }))
-        .finally(() => _sendResponse(res, response));
+const _checkRequestBody = function(req, response) {
+    return new Promise((resolve, reject) => {
+        if (req.body && req.body.username && req.body.password) {
+            resolve();
+        } else {
+            _setResponseCode(response, process.env.HTTP_BAD_REQUEST);
+            reject({message: process.env.MISSING_REQUEST_BODY_MSG});
+        }
+    });
 }
 
 const _generateSalt = function() {
@@ -36,22 +38,6 @@ const _createUser = function(req, passwordHash) {
     return User.create(newUser);
 }
 
-const addOne = function(req, res) {
-    const response = _createResponse();
-    if (req.body && req.body.username && req.body.password) {
-        _generateSalt()
-            .then((salt) => _hashPassword(req.body.password, salt))
-            .then((passwordHash) => _createUser(req, passwordHash))
-            .then((user) => _setResponse(response, process.env.HTTP_OK, user))
-            .catch((error) => setResponse(response, process.env.HTTP_ERROR, error.message))
-            .finally(() => _sendResponse(res, response));
-    } else {
-        _setResponse(response, process.env.HTTP_BAD_REQUEST, { message: process.env.MISSING_REQUEST_BODY_MSG });
-        _sendResponse(res, response);
-    }
-}
-
-
 const _findUser = function(username) {
     return User.findOne({username: username}).exec();
 }
@@ -70,19 +56,35 @@ const _isPasswordMatch = function(isMatch) {
     });
 }
 
+
+const getAll = function(req, res) {
+    const response = _createResponse();
+    User.find().exec()
+        .then((users) => _setResponse(response, process.env.HTTP_OK, users))
+        .catch((error) => _setErrorResponse(response, error))
+        .finally(() => _sendResponse(res, response));
+}
+
+const addOne = function(req, res) {
+    const response = _createResponse();
+    _checkRequestBody(req, response)
+        .then(() => _generateSalt())
+        .then((salt) => _hashPassword(req.body.password, salt))
+        .then((passwordHash) => _createUser(req, passwordHash))
+        .then((user) => _setResponse(response, process.env.HTTP_OK, user))
+        .catch((error) => _setErrorResponse(response, error))
+        .finally(() => _sendResponse(res, response));
+}
+
 const getOne = function(req, res) {
     const response = _createResponse();
-    if (req.body && req.body.username && req.body.password) {
-        _findUser(req.body.username)
-            .then((user) =>  _comparePassword(req.body.password, user.password))
-            .then((isMatch) => _isPasswordMatch(isMatch))
-            .then(() => _setResponse(response, process.env.HTTP_OK, {message: process.env.LOGIN_MESSAGE}))
-            .catch(() => _setResponse(response, process.env.HTTP_UNAUTHORIZED, {message: process.env.HTTP_UNAUTHORIZED_MESSAGE}))
-            .finally(() => _sendResponse(res, response));
-    } else {
-        _setResponse(response, process.env.HTTP_BAD_REQUEST, { message: process.env.MISSING_REQUEST_BODY_MSG });
-        _sendResponse(res, response);
-    }
+    _checkRequestBody(req)
+        .then(() => _findUser(req.body.username))
+        .then((user) =>  _comparePassword(req.body.password, user.password))
+        .then((isMatch) => _isPasswordMatch(isMatch))
+        .then(() => _setResponse(response, process.env.HTTP_OK, {message: process.env.LOGIN_MESSAGE}))
+        .catch(() => _setResponse(response, process.env.HTTP_UNAUTHORIZED, {message: process.env.HTTP_UNAUTHORIZED_MESSAGE}))
+        .finally(() => _sendResponse(res, response));
 }
 
 
