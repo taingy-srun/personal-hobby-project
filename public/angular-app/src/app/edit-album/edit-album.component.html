@@ -1,14 +1,14 @@
 <div class="album">
-    <h3>Adding New Album</h3>
+    <h3>Editing Album</h3>
     <br/>
     <div class="form-group col-sm-3">
-        <form [formGroup]="newAlbumForm" (ngSubmit)="add(newAlbumForm)">
+        <form [formGroup]="albumForm" (ngSubmit)="save()">
             <label class="form-label">Title:</label>
             <input class="form-control" formControlName="title" placeholder="Title"/>
             <label class="form-label">Released Date:</label>
             <input class="form-control" formControlName="releaseDate" type="date"/>
             <br/>
-            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-primary" type="submit">Save</button>
         </form>
     </div>
 </div>

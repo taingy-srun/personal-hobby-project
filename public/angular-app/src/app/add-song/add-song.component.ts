@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AlbumsDataService } from '../albums-data.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-song',
@@ -9,11 +9,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-song.component.css']
 })
 export class AddSongComponent {
-  @Input()
-  albumId!: string;
+  
   newSongForm!: FormGroup;
 
-  constructor(private _albumService: AlbumsDataService, private _router: Router){}
+  albumId!: string;
+
+  constructor(private _albumService: AlbumsDataService, private _route: ActivatedRoute, private _router: Router){}
 
   ngOnInit() {
     this.newSongForm = new FormGroup({
@@ -26,17 +27,13 @@ export class AddSongComponent {
       title: form.value["title"]
     }
 
+    this.albumId = this._route.snapshot.params["albumId"];
     this._albumService.addOneSong(this.albumId, newSong).subscribe((next) => {
-        this.afterAdded();
+      this.gotoAlbumPage();
     });
   }
 
   public gotoAlbumPage(): void {
-    this._router.navigate(["/albums"]);
-  }
-
-  private afterAdded() {
-    alert("Song added!");
-    // this.gotoAlbumPage();
+    this._router.navigate(["/albums/" + this.albumId]);
   }
 }

@@ -1,10 +1,12 @@
-<br/>
-<h3>Adding New Song</h3>
-<div class="form-group col-sm-3">
+<div class="album form-group col-sm-4">
+    <h3>Adding a new song</h3>
     <form [formGroup]="newSongForm" (ngSubmit)="add(newSongForm)">
         <label class="form-label">Title:</label>
-        <input class="form-control" formControlName="title" placeholder="Title"/>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" formControlName="title" placeholder="Title" aria-describedby="button-addon2">
+            <button class="btn btn-primary" type="submit" id="button-addon2">Save</button>
+          </div>
         <br/>
-        <button class="btn btn-primary" type="submit"> Add </button>
+        <button class="btn btn-light" routerLink="/albums"> < Back</button>
     </form>
 </div>

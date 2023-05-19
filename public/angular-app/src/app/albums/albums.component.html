@@ -1,9 +1,26 @@
 <div class="album">
-    <h3>List of Albums: </h3>
-    <ul>
-        <li *ngFor="let album of albums"><a routerLink="/albums/{{album._id}}"> {{ album.title }} </a> &nbsp;&nbsp; Released Date: {{ album.releaseDate | date: "dd-MM-yyyy"}} &nbsp;<button class="btn btn-link" (click)="delete(album._id)"><i>Delete</i></button></li>
-    </ul>
-    <br/>
+    <h3>List of Album:</h3>
+    <div class="col-sm-9">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Released Date</th>
+                <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let album of albums" class="table-dark">
+                <th scope="row"><a routerLink="/albums/{{album._id}}">{{ album.title }}</a></th>
+                <td>{{ album.releaseDate | date: "dd MMMM yyyy"}}</td>
+                <td>
+                    <button class="btn btn-link" routerLink="/albums/{{album._id}}/edit"><i>Edit</i></button>
+                    <button class="btn btn-link" (click)="delete(album._id)"><i>Delete</i></button>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>    
     <button class="btn btn-light" (click)="getPreviousPage()" [disabled]="disablePreviousButton()">< Previous</button>
     &nbsp;
     <button class="btn btn-light" (click)="getNextPage()" [disabled]="disableNextButton()">Next ></button>

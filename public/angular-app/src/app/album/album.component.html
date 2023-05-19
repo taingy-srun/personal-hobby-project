@@ -1,15 +1,27 @@
 <div class="album">
-    <h1> {{ album.title }} </h1>
-    <h3> Released Date: {{ album.releaseDate | date: "dd MMMM YYYY" }} </h3>
+    <h1><strong>{{ album.title }}</strong> || Released Date: {{ album.releaseDate | date: "dd MMMM YYYY" }}</h1>
+   
     <h4> List of Songs: </h4>
-    <ol>
-        <li *ngFor="let song of album.songs"> {{ song.title }} &nbsp; <button class="btn btn-link" (click)="deleteOneSong(song._id)"><i>Delete</i></button></li>
-    </ol>
-    <br/>
-    <br/>
+    <div class="col-sm-9">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let song of album.songs" class="table-dark">
+                <th scope="row">{{ song.title }}</th>
+                <td>
+                    <button class="btn btn-link" routerLink="/albums/{{album._id}}/songs/{{song._id}}/edit"><i>Edit</i></button>
+                    <button class="btn btn-link" (click)="deleteOneSong(song._id)"><i>Delete</i></button>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <button class="btn btn-light" routerLink="/albums"> < Back</button>
-    &nbsp;&nbsp;
-    <button class="btn btn-primary">Edit</button>
-    <br/><br/>
-    <app-add-song [albumId]="album._id"></app-add-song>
+    &nbsp;
+    <button class="btn btn-primary" routerLink="/albums/{{album._id}}/newSong">Add New Song</button>
 </div>

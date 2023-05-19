@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AlbumsDataService } from '../albums-data.service';
 
-class Song {
+export class Song {
   #_id!: string;
   #title!: string;
   #duration!: number;

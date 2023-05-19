@@ -17,6 +17,8 @@ import { AddingAlbumComponent } from './adding-album/adding-album.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AddSongComponent } from './add-song/add-song.component';
+import { EditAlbumComponent } from './edit-album/edit-album.component';
+import { EditSongComponent } from './edit-song/edit-song.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { AddSongComponent } from './add-song/add-song.component';
     AddingAlbumComponent,
     RegisterComponent,
     LoginComponent,
-    AddSongComponent
+    AddSongComponent,
+    EditAlbumComponent,
+    EditSongComponent
   ],
   imports: [
     BrowserModule,
