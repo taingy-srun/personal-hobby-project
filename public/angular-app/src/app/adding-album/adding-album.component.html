@@ -1,9 +1,14 @@
 <div class="album">
     <h3>Adding New Album Form</h3>
     <br/>
-    <form [formGroup]="newAlbumForm" (ngSubmit)="add(newAlbumForm)">
-        <label>Title: <input formControlName="title" placeholder="Title"/></label><br/><br/>
-        <label>Released Date: <input formControlName="releaseDate" type="date"/></label><br/><br/>
-        <button type="submit">Add</button>
-    </form>
+    <div class="form-group col-sm-3">
+        <form [formGroup]="newAlbumForm" (ngSubmit)="add(newAlbumForm)">
+            <label class="form-label">Title:</label>
+            <input class="form-control" formControlName="title" placeholder="Title"/>
+            <label class="form-label">Released Date:</label>
+            <input class="form-control" formControlName="releaseDate" type="date"/>
+            <br/>
+            <button class="btn btn-primary" type="submit">Add</button>
+        </form>
+    </div>
 </div>

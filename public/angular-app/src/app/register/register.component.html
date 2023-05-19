@@ -1,10 +1,15 @@
-<div class="album">
+<div class="album form-group col-sm-4">
     <h2>Registration Form</h2><br/>
     <form #registerForm="ngForm" (ngSubmit)="register()">
-        <label>Name: <input name="name" placeholder="your name" [ngModel]="name"/></label><br/><br/>
-        <label>Username: <input name="username" placeholder="username" [ngModel]="username"/></label><br/><br/>
-        <label>Password: <input name="password" placeholder="password" [ngModel]="password"/></label><br/><br/>
-        <label>Confirm Password: <input name="confirmPassword" placeholder="confirm password" [ngModel]="confirmPassword"/></label><br/><br/>
-        <button type="submit">Register</button>
+        <label class="form-label">Name:</label>
+        <input class="form-control" name="name" placeholder="your name" [(ngModel)]="name"/>
+        <label class="form-label">Username:</label>
+        <input class="form-control" name="username" placeholder="username" [(ngModel)]="username"/>
+        <label class="form-label">Password:</label>
+        <input class="form-control" type="password" name="password" placeholder="password" [(ngModel)]="password"/>
+        <label class="form-label">Confirm Password:</label>
+        <input class="form-control"  type="password" name="confirmPassword" placeholder="confirm password" [(ngModel)]="confirmPassword"/>
+        <br/>
+        <button class="btn btn-primary" type="submit">Register</button>
     </form>
 </div>
