@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const util = require("util");
 const User = mongoose.model(process.env.USER_MODEL);
 const ResponseUtils = require("../utils/response.utils");
 
@@ -42,27 +44,27 @@ const _findUser = function(username) {
     return User.findOne({username: username}).exec();
 }
 
-const _comparePassword = function(password, encryptedPassword) {
-    return bcrypt.compare(password, encryptedPassword);
+const _comparePassword = function(password, user) {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, user.password)
+            .then((isMatch) => resolve({isMatch: isMatch, user: user}))
+            .catch((error) => reject(error));
+    })
 }
 
-const _isPasswordMatch = function(isMatch) {
+const _isPasswordMatch = function(isMatch, user) {
     return new Promise((resolve, reject) => {
         if (isMatch) {
-            resolve();
+            resolve(user);
         } else {
             reject();
         }
     });
 }
 
-
-const getAll = function(req, res) {
-    const response = _createResponse();
-    User.find().exec()
-        .then((users) => _setResponse(response, process.env.HTTP_OK, users))
-        .catch((error) => _setErrorResponse(response, error))
-        .finally(() => _sendResponse(res, response));
+const _generateToken = function(user) {
+    const sign = util.promisify(jwt.sign);
+    return sign({name: user.name}, process.env.TOKEN_SECRET, {expiresIn: parseInt(process.env.TOKEN_EXPIRE_IN)})   
 }
 
 const addOne = function(req, res) {
@@ -78,18 +80,18 @@ const addOne = function(req, res) {
 
 const getOne = function(req, res) {
     const response = _createResponse();
-    _checkRequestBody(req)
+    _checkRequestBody(req, response)
         .then(() => _findUser(req.body.username))
-        .then((user) =>  _comparePassword(req.body.password, user.password))
-        .then((isMatch) => _isPasswordMatch(isMatch))
-        .then(() => _setResponse(response, process.env.HTTP_OK, {message: process.env.LOGIN_MESSAGE}))
+        .then((user) =>  _comparePassword(req.body.password, user))
+        .then(({isMatch, user}) => _isPasswordMatch(isMatch, user))
+        .then((user) => _generateToken(user))
+        .then((token) => _setResponse(response, process.env.HTTP_OK, {token: token}))
         .catch(() => _setResponse(response, process.env.HTTP_UNAUTHORIZED, {message: process.env.HTTP_UNAUTHORIZED_MESSAGE}))
         .finally(() => _sendResponse(res, response));
 }
 
 
 module.exports = {
-    getAll,
     register: addOne,
     login: getOne
 }
