@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const albumController = require("../controllers/album.controller");
+const songController = require("../controllers/song.controller");
 
 router.route("/")
     .get(albumController.getAll)
@@ -12,13 +13,13 @@ router.route("/:id")
     .delete(albumController.deleteOne);
 
 router.route("/:id/songs")
-    .get(albumController.getAlbumSongs)
-    .post(albumController.addOneSong);
+    .get(songController.getAll)
+    .post(songController.addOne);
 
 router.route("/:id/songs/:songId")
-    .get(albumController.getOneSong)
-    .put(albumController.fullUpdateOneSong)
-    .patch(albumController.partialUpdateOneSong)
-    .delete(albumController.deleteOneSong);
+    .get(songController.getOne)
+    .put(songController.fullUpdateOne)
+    .patch(songController.partialUpdateOne)
+    .delete(songController.deleteOne);
 
 module.exports = router;
