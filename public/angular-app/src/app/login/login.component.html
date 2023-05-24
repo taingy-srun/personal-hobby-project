@@ -1,11 +1,5 @@
-<div class="album form-group col-sm-3">
-    <h2>Login Form</h2><br/>
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
-        <label class="form-label">Username:</label>
-        <input class="form-control" formControlName="username" placeholder="username" />
-        <label class="form-label">Password:</label>
-        <input class="form-control" type="password" formControlName="password" placeholder="password" />
-        <br/>
-        <button class="btn btn-primary" type="submit">Login</button>
-    </form>
-</div>
+<form class="d-flex" [formGroup]="loginForm" (ngSubmit)="login()">
+    <input formControlName="username" class="form-control me-sm-2" type="text" placeholder="Username">
+    <input formControlName="password" class="form-control me-sm-2" type="password" placeholder="Password">
+    <button class="btn btn-primary my-2 my-sm-0" type="submit">Login</button>
+</form>

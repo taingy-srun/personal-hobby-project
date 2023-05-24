@@ -19,6 +19,7 @@ import { LoginComponent } from './login/login.component';
 import { AddSongComponent } from './add-song/add-song.component';
 import { EditAlbumComponent } from './edit-album/edit-album.component';
 import { EditSongComponent } from './edit-song/edit-song.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { EditSongComponent } from './edit-song/edit-song.component';
     LoginComponent,
     AddSongComponent,
     EditAlbumComponent,
-    EditSongComponent
+    EditSongComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

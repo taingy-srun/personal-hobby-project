@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserDataService } from '../user/user-data.service';
 import { Router } from '@angular/router';
+import { SessionService } from '../session.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent {
   username!: string;
   password!: string;
 
-  constructor(private _userService: UserDataService, private _router: Router) {}
+  constructor(private _userService: UserDataService, private _sessionService: SessionService, private _router: Router) {}
 
   ngOnInit() {
     this._initFrom();
@@ -50,7 +51,7 @@ export class LoginComponent {
     }
 
     this._userService.login(user).subscribe({
-      next: (user) => this._onLoginSuccess(),
+      next: (user) => this._onLoginSuccess(user),
       error: (error) => this._onLoginFailed(error)
     });
   }
@@ -69,12 +70,17 @@ export class LoginComponent {
     alert(JSON.stringify(error["error"]));
   }
  
-  private _onLoginSuccess() {
-    alert("Login successfully!");
+  private _onLoginSuccess(user: any) {
+    this._setSessionData(user);
     this._goHome();
   }
 
   private _goHome() {
     this._router.navigate(["/"]);
+  }
+
+  private _setSessionData(user: any) {
+    this._sessionService.setToken(user["token"]);
+    this._sessionService.setName(user["name"]);
   }
 }

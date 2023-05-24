@@ -12,8 +12,8 @@ export class AlbumsDataService {
   _baseUrl:string = "http://localhost:3000/api/albums";
   constructor(private _http: HttpClient) {}
 
-  public getByPage(offset: number, count: number): Observable<Album[]> {
-    return this._http.get<Album[]>(this._baseUrl + "?offset=" + offset + "&count=" + count);
+  public getAll(offset: number, count: number, search: string): Observable<Album[]> {
+    return this._http.get<Album[]>(this._baseUrl + "?offset=" + offset + "&count=" + count + "&search=" + search);
   }
 
   public getOne(_id: string): Observable<Album> {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Album } from '../albums/albums.component';
 import { AlbumsDataService } from '../albums-data.service';
 import { ActivatedRoute } from '@angular/router';
+import { SessionService } from '../session.service';
 
 @Component({
   selector: 'app-album',
@@ -12,7 +13,7 @@ export class AlbumComponent {
 
   album!: Album;
 
-  constructor(private _albumService: AlbumsDataService, private _route: ActivatedRoute) {}
+  constructor(private _albumService: AlbumsDataService, private _route: ActivatedRoute, private _sessionService: SessionService) {}
 
   ngOnInit() {
     this.getAlbum();
@@ -43,6 +44,10 @@ export class AlbumComponent {
           console.log(err);
         }
     });
+  }
+
+  public isLogin() {
+    return !this._sessionService.isLogin();
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SessionService } from '../session.service';
 
 @Component({
   selector: 'app-navigation',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent {
+
+  constructor(private _sessionService: SessionService) {}
+
+  public isLogin() {
+    return !this._sessionService.isLogin();
+  }
 
 }

@@ -40,18 +40,16 @@ const _checkAlbumExist = function(album) {
     });
 }
 
-const _checkSongExist = function(album, songId) {
-    return new Promise((resolve, reject) => {
-        if (!album.songs.id(songId)) {
-            reject({message: process.env.HTTP_SONG_NOT_FOUND_MESSAGE});
-        } else {
-            resolve(album);
-        }
-    });
-}
-
-const _findAll = function(offset, count) {
-    return Album.find().skip(offset).limit(count).sort({releaseDate: parseInt(process.env.ORDER_ASC)}).exec();
+const _findAll = function(pagination, search) {
+    const offset = pagination.offset;
+    const count = pagination.count;
+    
+    if (search) {
+        const regex = new RegExp(search, process.env.SEARCH_REGEX_CASE_INSENSITIVE);
+        return Album.find({title: {$regex: regex}}).skip(offset).limit(count).sort({releaseDate: parseInt(process.env.ORDER_ASC)}).exec();
+    } else {
+        return Album.find().skip(offset).limit(count).sort({releaseDate: parseInt(process.env.ORDER_ASC)}).exec();
+    }
 }
 
 const _createAlbum = function(req) {
@@ -65,8 +63,9 @@ const _createAlbum = function(req) {
 
 const getAll = function(req, res) {
     const response = _createResponse();
+
     _checkPagination(req, response)
-        .then((pagination) => _findAll(pagination.offset, pagination.count))
+        .then((pagination) => _findAll(pagination, req.query.search))
         .then((albums) => _setResponse(response, process.env.HTTP_OK, albums))
         .catch((error) => _setErrorResponse(response, error))
         .finally(() => _sendResponse(res, response));

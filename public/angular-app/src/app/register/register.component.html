@@ -2,13 +2,13 @@
     <h2>Registration Form</h2><br/>
     <form #registerForm="ngForm" (ngSubmit)="register()">
         <label class="form-label">Name:</label>
-        <input class="form-control" name="name" placeholder="your name" [(ngModel)]="name"/>
+        <input class="form-control" name="name" placeholder="Your name" [(ngModel)]="name"/>
         <label class="form-label">Username:</label>
-        <input class="form-control" name="username" placeholder="username" [(ngModel)]="username"/>
+        <input class="form-control" name="username" placeholder="Username" [(ngModel)]="username"/>
         <label class="form-label">Password:</label>
-        <input class="form-control" type="password" name="password" placeholder="password" [(ngModel)]="password"/>
+        <input class="form-control" type="password" name="password" placeholder="Password" [(ngModel)]="password"/>
         <label class="form-label">Confirm Password:</label>
-        <input class="form-control"  type="password" name="confirmPassword" placeholder="confirm password" [(ngModel)]="confirmPassword"/>
+        <input class="form-control"  type="password" name="confirmPassword" placeholder="Confirm password" [(ngModel)]="confirmPassword"/>
         <br/>
         <button class="btn btn-primary" type="submit">Register</button>
     </form>

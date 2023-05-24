@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AlbumsDataService } from '../albums-data.service';
+import { SessionService } from '../session.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 export class Song {
   #_id!: string;
@@ -62,22 +64,23 @@ export class AlbumsComponent {
   offset: number = 0;
   count: number = 5;
 
-  constructor(private _albumService: AlbumsDataService) {}
+  searchForm!: FormGroup;
+  title: string = "";
+
+  constructor(private _albumService: AlbumsDataService, private _sessionService: SessionService) {}
 
   ngOnInit(): void {
+    this.initFrom();
     this.getAlbums();
   }
 
   public getAlbums() {
-    this._albumService.getByPage(this.offset, this.count).subscribe({
+    this._albumService.getAll(this.offset, this.count, this.title).subscribe({
       next: (albums) => {
         this.albums = albums;
       },
       error: (err) => {
         console.log(err);
-      },
-      complete: () => {
-        console.log("On complete");
       }
   });
   }
@@ -126,10 +129,22 @@ export class AlbumsComponent {
       },
       error: (err) => {
         console.log(err);
-      },
-      complete: () => {
-        console.log("On complete");
       }
     });
+  }
+
+  private initFrom() {
+    this.searchForm = new FormGroup({
+      title: new FormControl()
+    });
+  }
+
+  public search(){
+    this.title = this.searchForm.value["title"];
+    this.getAlbums();
+  }
+
+  public isLogin() {
+    return !this._sessionService.isLogin();
   }
 }
