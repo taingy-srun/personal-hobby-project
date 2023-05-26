@@ -1,16 +1,24 @@
+# The-PINK
+
 This is my Personal Hobby Project for MWA course.
 
 This project is about the operations on albums and songs of my favorite K-POP band called `BLACKPINK`.
 
+This project was built by using: 
+    1. MongoDB database
+    2. Angular
+    3. Express
+    4. Node.js
 
-Instruction:
+## To startup the project:
 
-1. To startup the project: use `npm install` in the root directory and in public/angular-app
+1. Run `npm install` in the root directory and in `public/angular-app`
+2. Run `npm start`  it will be started both frontend and backend servers.
 
 
-Application Features:
+## Application Features:
     
-1. CRUD on Albums [To operate on ADD, UPDATE, DELETE albums, you need to login first]
-2. CRUD on Songs [To operate on ADD, UPDATE, DELETE songs, you need to login first]
+1. CRUD on Albums [To ADD, UPDATE, DELETE albums, you need to login first]
+2. CRUD on Songs [To ADD, UPDATE, DELETE songs, you need to login first]
 3. Register
 4. Login
