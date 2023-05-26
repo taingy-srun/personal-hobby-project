@@ -4,11 +4,12 @@ This is my Personal Hobby Project for MWA course.
 
 This project is about the operations on albums and songs of my favorite K-POP band called `BLACKPINK`.
 
-This project was built by using: 
-    1. MongoDB database
-    2. Angular
-    3. Express
-    4. Node.js
+This project was built by using MEAN stack
+
+1. MongoDB
+2. Angular
+3. Express
+4. Node.js
 
 ## To startup the project:
 
