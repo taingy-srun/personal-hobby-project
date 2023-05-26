@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { Album } from '../albums/albums.component';
-import { AlbumsDataService } from '../albums/albums-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+
+import { Album } from '../albums/data/album-model';
+import { AlbumsDataService } from '../albums/data/albums-data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-album',
@@ -10,6 +12,15 @@ import { AuthenticationService } from '../authentication.service';
   styleUrls: ['./album.component.css']
 })
 export class AlbumComponent {
+  
+  labelTitle = environment.label_title;
+  labelReleasedDate = environment.label_released_date;
+  labelActions = environment.label_actions;
+  labelBtnBack = environment.label_btn_back;
+  labelBtnEdit = environment.label_btn_edit;
+  labelBtnDelete = environment.label_btn_delete;
+  labelAddNewSong = environment.label_add_new_song;
+  labelListOfsong = environment.label_song_list;
 
   album!: Album;
 

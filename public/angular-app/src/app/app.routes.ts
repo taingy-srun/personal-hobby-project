@@ -1,5 +1,5 @@
 import { AddSongComponent } from "./add-song/add-song.component";
-import { AddingAlbumComponent } from "./adding-album/adding-album.component";
+import { AddingAlbumComponent } from "./add-album/add-album.component";
 import { AlbumComponent } from "./album/album.component";
 import { AlbumsComponent } from "./albums/albums.component";
 import { EditAlbumComponent } from "./edit-album/edit-album.component";

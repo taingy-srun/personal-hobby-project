@@ -1,12 +1,12 @@
 <div class="album form-group col-sm-4">
-    <h3>Adding a new song</h3>
+    <h3>{{ labelAddingNewSong }}</h3>
     <form [formGroup]="newSongForm" (ngSubmit)="add(newSongForm)">
-        <label class="form-label">Title:</label>
+        <label class="form-label">{{ labelTitle }}:</label>
         <div class="input-group mb-3">
             <input type="text" class="form-control" formControlName="title" placeholder="Title" aria-describedby="button-addon2">
-            <button class="btn btn-primary" type="submit" id="button-addon2">Save</button>
+            <button class="btn btn-primary" type="submit" id="button-addon2">{{ labelBtnAdd }}</button>
           </div>
         <br/>
-        <button class="btn btn-light" routerLink="/albums"> < Back</button>
+        <button class="btn btn-light" routerLink="/albums">{{ labelBtnBack }}</button>
     </form>
 </div>

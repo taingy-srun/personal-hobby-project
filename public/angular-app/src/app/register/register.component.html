@@ -1,17 +1,17 @@
 <div class="album form-group col-sm-4">
     <div *ngIf="isSuccess" class="alert alert-success">{{ successMessage }}</div>
     <div *ngIf="isError" class="alert alert-danger">{{ errorMessage }}</div>
-    <h2>Registration Form</h2><br/>
+    <h2>{{ labelRegistrationForm }}</h2><br/>
     <form #registerForm="ngForm" (ngSubmit)="register()">
-        <label class="form-label">Name:</label>
-        <input class="form-control" name="name" placeholder="Your name" [(ngModel)]="name"/>
-        <label class="form-label">Username:</label>
-        <input class="form-control" name="username" placeholder="Username" [(ngModel)]="username"/>
-        <label class="form-label">Password:</label>
-        <input class="form-control" type="password" name="password" placeholder="Password" [(ngModel)]="password"/>
-        <label class="form-label">Confirm Password:</label>
-        <input class="form-control"  type="password" name="confirmPassword" placeholder="Confirm password" [(ngModel)]="confirmPassword"/>
+        <label class="form-label">{{ labelName }}:</label>
+        <input class="form-control" name="name" placeholder="{{labelName}}" [(ngModel)]="name"/>
+        <label class="form-label">{{ labelUsername }}:</label>
+        <input class="form-control" name="username" placeholder="{{labelUsername}}" [(ngModel)]="username"/>
+        <label class="form-label">{{ labelPassword }}:</label>
+        <input class="form-control" type="password" name="password" placeholder="{{labelPassword}}" [(ngModel)]="password"/>
+        <label class="form-label">{{ labelConfirmPassword }}:</label>
+        <input class="form-control"  type="password" name="confirmPassword" placeholder="{{labelConfirmPassword}}" [(ngModel)]="confirmPassword"/>
         <br/>
-        <button class="btn btn-primary" type="submit">Register</button>
+        <button class="btn btn-primary" type="submit">{{ labelRegister }}</button>
     </form>
 </div>

@@ -1,5 +1,5 @@
 <form class="d-flex" [formGroup]="loginForm" (ngSubmit)="login()">
-    <input formControlName="username" class="form-control me-sm-2" type="text" placeholder="Username">
-    <input formControlName="password" class="form-control me-sm-2" type="password" placeholder="Password">
-    <button class="btn btn-primary my-2 my-sm-0" type="submit">Login</button>
+    <input formControlName="username" class="form-control me-sm-2" type="text" placeholder="{{labelUsername}}">
+    <input formControlName="password" class="form-control me-sm-2" type="password" placeholder="{{labelPassword}}">
+    <button class="btn btn-primary" type="submit">{{ labelLogin }}</button>
 </form>

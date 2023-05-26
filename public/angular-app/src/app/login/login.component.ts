@@ -4,6 +4,7 @@ import { UserDataService } from '../user/user-data.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { Credential } from '../user/credential-model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,9 @@ import { Credential } from '../user/credential-model';
 })
 export class LoginComponent {
 
+  labelUsername = environment.label_username;
+  labelPassword = environment.label_password;
+  labelLogin = environment.label_login;
 
   loginForm!: FormGroup;
 
@@ -32,8 +36,8 @@ export class LoginComponent {
   }
 
   private _setValue() {
-    this.username = this.loginForm.value["username"];
-    this.password = this.loginForm.value["password"];
+    this.username = this.loginForm.value.username;
+    this.password = this.loginForm.value.password;
   }
 
 
@@ -57,14 +61,14 @@ export class LoginComponent {
     this._setValue();
     
     if (!this._checkFieldsEmpty()) {
-      alert("Please input all the fields!");
+      alert(environment.msg_input_all_fields);
     } 
 
     this._login();
   }
 
   private _onLoginFailed(error: any) {
-    alert(JSON.stringify(error["error"]));
+    alert(JSON.stringify(error.error));
   }
  
   private _onLoginSuccess(user: any) {
@@ -77,6 +81,6 @@ export class LoginComponent {
   }
 
   private _setAuthenticationData(user: any) {
-    this._authenticationService.setToken(user["token"]);
+    this._authenticationService.setToken(user.token);
   }
 }

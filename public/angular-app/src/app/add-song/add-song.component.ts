@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AlbumsDataService } from '../albums/albums-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { AlbumsDataService } from '../albums/data/albums-data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-song',
@@ -9,7 +11,12 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./add-song.component.css']
 })
 export class AddSongComponent {
-  
+
+  labelAddingNewSong = environment.label_adding_new_song;
+  labelTitle = environment.label_title;
+  labelBtnBack = environment.label_btn_back;
+  labelBtnAdd = environment.label_btn_add;
+
   newSongForm!: FormGroup;
 
   albumId!: string;

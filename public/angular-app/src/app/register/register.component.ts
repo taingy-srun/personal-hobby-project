@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { UserDataService } from '../user/user-data.service';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+
+import { UserDataService } from '../user/user-data.service';
 import { User } from '../user/user-model';
 
 @Component({
@@ -10,6 +12,14 @@ import { User } from '../user/user-model';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+
+  labelRegistrationForm = environment.label_registration_form;
+  labelName = environment.label_name;
+  labelUsername = environment.label_username;
+  labelPassword = environment.label_password;
+  labelConfirmPassword = environment.label_confirm_password;
+  labelRegister = environment.label_register;
+
 
   @ViewChild("registerForm")
   registerForm!: NgForm;
@@ -38,10 +48,10 @@ export class RegisterComponent {
 
   public register() {
     if (!this._checkFieldsEmpty()) {
-      alert("Please input all the fields!");
+      alert(environment.msg_input_all_fields);
     }
     if (!this._isPasswordMatch()) {
-      alert("The confirm password is not matched!");
+      alert(environment.msg_password_not_match);
       return;
     }
 
@@ -75,14 +85,14 @@ export class RegisterComponent {
     console.log(error);
   
     this.successMessage = "";
-    this.errorMessage = "Failed to register!";
+    this.errorMessage = environment.msg_register_failed;
     this.isSuccess = false;
     this.isError = true;
   }
 
   private _onRegisterSuccess() {
     this._clearForm();
-    this.successMessage = "User register successful!";
+    this.successMessage = environment.msg_register_success;
     this.errorMessage = "";
     this.isSuccess = true;
     this.isError = false;

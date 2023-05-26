@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-welcome',
@@ -9,6 +10,10 @@ import { Router } from '@angular/router';
 })
 export class WelcomeComponent {
 
+  labelWelcome = environment.label_welcome;
+  labelLogout = environment.label_logout;
+
+  
   constructor(private _authenticationService: AuthenticationService, private _router: Router) {}
 
   public getName(): string {

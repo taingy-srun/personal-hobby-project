@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { AlbumsDataService } from '../albums/albums-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Album } from '../albums/albums.component';
+
+import { AlbumsDataService } from '../albums/data/albums-data.service';
+import { Album } from '../albums/data/album-model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-edit-album',
@@ -10,6 +12,13 @@ import { Album } from '../albums/albums.component';
   styleUrls: ['./edit-album.component.css']
 })
 export class EditAlbumComponent {
+
+  labelEditingAlbum = environment.label_editing_album;
+  labelTitle = environment.label_title;
+  labelReleasedDate = environment.label_released_date;
+  labelBtnSave = environment.label_btn_save;
+  labelBtnCancel = environment.label_btn_cancel;
+
 
   album!: Album;
   albumId!: string;
@@ -51,8 +60,8 @@ export class EditAlbumComponent {
 
   public save(){
     const album = {
-      title: this.albumForm.value["title"],
-      releaseDate: this.albumForm.value["releaseDate"]
+      title: this.albumForm.value.title,
+      releaseDate: this.albumForm.value.releaseDate
     }
 
     this._albumService.updateOne(this.albumId, album).subscribe((next) => {

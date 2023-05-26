@@ -1,19 +1,19 @@
 <div class="album">
     <form class="col-sm-4" [formGroup]="searchForm" (ngSubmit)="search()">
-        <label class="form-label">Search:</label>
+        <label class="form-label">{{ labelSearch }}:</label>
         <div class="input-group mb-3">
             <input type="search" class="form-control" formControlName="title" placeholder="Title" aria-describedby="button-addon2">
-            <button class="btn btn-outline-light" type="submit" id="button-addon2">Search</button>
+            <button class="btn btn-outline-light" type="submit" id="button-addon2">{{ labelSearch }}</button>
         </div>
     </form>
-    <h3>List of Album:</h3>
+    <h3>{{ labelListOfAlbum }}</h3>
     <div class="col-sm-9">
         <table class="table table-hover">
             <thead>
                 <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Released Date</th>
-                <th scope="col" *ngIf="isLoggedIn()">Actions</th>
+                <th scope="col">{{ labelTitle }}</th>
+                <th scope="col">{{ labelReleasedDate }}</th>
+                <th scope="col" *ngIf="isLoggedIn()">{{ labelActions }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,16 +21,16 @@
                 <th scope="row"><a routerLink="/albums/{{album._id}}">{{ album.title }}</a></th>
                 <td>{{ album.releaseDate | date: "dd MMMM yyyy"}}</td>
                 <td *ngIf="isLoggedIn()">
-                    <button class="btn btn-link" routerLink="/albums/{{album._id}}/edit"><i>Edit</i></button>
-                    <button class="btn btn-link" (click)="delete(album._id)"><i>Delete</i></button>
+                    <button class="btn btn-link" routerLink="/albums/{{album._id}}/edit"><i>{{ labelBtnEdit }}</i></button>
+                    <button class="btn btn-link" (click)="delete(album._id)"><i>{{ labelBtnDelete }}</i></button>
                 </td>
                 </tr>
             </tbody>
         </table>
     </div>    
-    <button class="btn btn-light" (click)="getPreviousPage()" [disabled]="disablePreviousButton()">< Previous</button>
+    <button class="btn btn-light" (click)="getPreviousPage()" [disabled]="disablePreviousButton()">{{ labelBtnPrevious }}</button>
     &nbsp;
-    <button class="btn btn-light" (click)="getNextPage()" [disabled]="disableNextButton()">Next ></button>
+    <button class="btn btn-light" (click)="getNextPage()" [disabled]="disableNextButton()">{{ labelBtnNext }}</button>
     &nbsp;
-    <button *ngIf="isLoggedIn()" class="btn btn-primary" routerLink="/newAlbum">Add New Album</button>
+    <button *ngIf="isLoggedIn()" class="btn btn-primary" routerLink="/newAlbum">{{ labelAddNewAlbum }}</button>
 </div>

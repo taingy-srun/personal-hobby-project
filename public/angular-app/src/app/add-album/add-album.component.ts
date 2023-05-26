@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AlbumsDataService } from '../albums/albums-data.service';
-import { Album } from '../albums/albums.component';
 import { Router } from '@angular/router';
+
+import { AlbumsDataService } from '../albums/data/albums-data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-adding-album',
-  templateUrl: './adding-album.component.html',
-  styleUrls: ['./adding-album.component.css']
+  templateUrl: './add-album.component.html',
+  styleUrls: ['./add-album.component.css']
 })
 export class AddingAlbumComponent {
+
+  labelAddingNewAlbum = environment.label_adding_new_album;
+  labelTitle = environment.label_title;
+  labelReleasedDate = environment.label_released_date;
+  labelBtnBack = environment.label_btn_back;
+  labelBtnAdd = environment.label_btn_add;
 
   newAlbumForm!: FormGroup;
 
@@ -24,8 +31,8 @@ export class AddingAlbumComponent {
 
   public add(form: FormGroup){
     const newAlbum = {
-      title: form.value["title"],
-      releaseDate: form.value["releaseDate"]
+      title: form.value.title,
+      releaseDate: form.value.releaseDate
     }
 
     this._albumService.addOne(newAlbum).subscribe((next) => {

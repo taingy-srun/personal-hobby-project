@@ -1,14 +1,14 @@
 <div class="album">
-    <h3>Editing Song</h3>
+    <h3>{{ labelEditingSong }}</h3>
     <br/>
     <div class="form-group col-sm-3">
         <form [formGroup]="songForm" (ngSubmit)="save()">
-            <label class="form-label">Title:</label>
+            <label class="form-label">{{ labelTitle }}:</label>
             <input class="form-control" formControlName="title" placeholder="Title"/>
             <br/>
-            <button class="btn btn-light" (click)="gotoAlbumPage()">Cancel</button>
+            <button class="btn btn-light" (click)="gotoAlbumPage()">{{ labelBtnCancel }}</button>
             &nbsp;
-            <button class="btn btn-primary" type="submit">Save</button>
+            <button class="btn btn-primary" type="submit">{{ labelBtnSave }}</button>
         </form>
     </div>
 </div>

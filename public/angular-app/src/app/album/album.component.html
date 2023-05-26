@@ -1,27 +1,27 @@
 <div class="album">
-    <h1><strong>{{ album.title }}</strong> || Released Date: {{ album.releaseDate | date: "dd MMMM YYYY" }}</h1>
+    <h1><strong>{{ album.title }}</strong> || {{ labelReleasedDate }}: {{ album.releaseDate | date: "dd MMMM YYYY" }}</h1>
    
-    <h4> List of Songs: </h4>
+    <h4>{{ labelListOfsong }}: </h4>
     <div class="col-sm-9">
         <table class="table table-hover">
             <thead>
                 <tr>
-                <th scope="col">Title</th>
-                <th scope="col" *ngIf="isLoggedIn()">Actions</th>
+                <th scope="col">{{ labelTitle }}</th>
+                <th scope="col" *ngIf="isLoggedIn()">{{ labelActions }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let song of album.songs" class="table-dark">
                 <th scope="row">{{ song.title }}</th>
                 <td *ngIf="isLoggedIn()">
-                    <button class="btn btn-link" routerLink="/albums/{{album._id}}/songs/{{song._id}}/edit"><i>Edit</i></button>
-                    <button class="btn btn-link" (click)="deleteOneSong(song._id)"><i>Delete</i></button>
+                    <button class="btn btn-link" routerLink="/albums/{{album._id}}/songs/{{song._id}}/edit"><i>{{ labelBtnEdit }}</i></button>
+                    <button class="btn btn-link" (click)="deleteOneSong(song._id)"><i>{{ labelBtnDelete }}</i></button>
                 </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <button class="btn btn-light" routerLink="/albums"> < Back</button>
+    <button class="btn btn-light" routerLink="/albums">{{ labelBtnBack }}</button>
     &nbsp;
-    <button *ngIf="isLoggedIn()" class="btn btn-primary" routerLink="/albums/{{album._id}}/newSong">Add New Song</button>
+    <button *ngIf="isLoggedIn()" class="btn btn-primary" routerLink="/albums/{{album._id}}/newSong">{{ labelAddNewSong }}</button>
 </div>

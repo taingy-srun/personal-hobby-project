@@ -1,16 +1,16 @@
 <div class="album">
-    <h3>Adding New Album</h3>
+    <h3>{{ labelAddingNewAlbum }}</h3>
     <br/>
     <div class="form-group col-sm-3">
         <form [formGroup]="newAlbumForm" (ngSubmit)="add(newAlbumForm)">
-            <label class="form-label">Title:</label>
+            <label class="form-label">{{ labelTitle }}:</label>
             <input class="form-control" formControlName="title" placeholder="Title"/>
-            <label class="form-label">Released Date:</label>
+            <label class="form-label">{{ labelReleasedDate }}:</label>
             <input class="form-control" formControlName="releaseDate" type="date"/>
             <br/>
-            <button class="btn btn-light" routerLink="/albums"> < Back</button>
+            <button class="btn btn-light" routerLink="/albums">{{ labelBtnBack }}</button>
             &nbsp;
-            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-primary" type="submit">{{ labelBtnAdd }}</button>
         </form>
     </div>
 </div>

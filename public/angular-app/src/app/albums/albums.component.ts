@@ -1,55 +1,10 @@
 import { Component } from '@angular/core';
-import { AlbumsDataService } from './albums-data.service';
-import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
-export class Song {
-  #_id!: string;
-  #title!: string;
-  #duration!: number;
-
-  get _id(): string {
-    return this.#_id;
-  }
-  get title(): string {
-    return this.#title;
-  }
-  set title(title: string) {
-    this.#title = title;
-  }
-  get duration(): number {
-    return this.#duration;
-  }
-  set duration(duration: number) {
-    this.#duration = duration;
-  }
-}
-
-export class Album {
-  #_id!: string;
-  #title!: string;
-  #releaseDate!: Date;
-  #songs!: Song[];
-
-  get _id(): string {
-    return this.#_id;
-  }
-  get title(): string {
-    return this.#title;
-  }
-  set title(title: string) {
-    this.#title = title;
-  }
-  get releaseDate(): Date {
-    return this.#releaseDate;
-  }
-  set releaseDate(releaseDate: Date) {
-    this.#releaseDate = releaseDate;
-  }
-  get songs(): Song[] {
-    return this.#songs;
-  }
-}
+import { AuthenticationService } from '../authentication.service';
+import { Album } from './data/album-model';
+import { AlbumsDataService } from './data/albums-data.service';
 
 
 @Component({
@@ -59,10 +14,22 @@ export class Album {
 })
 export class AlbumsComponent {
 
-  albums!: Album[];
+  labelTitle = environment.label_title;
+  labelReleasedDate = environment.label_released_date;
+  labelActions = environment.label_actions;
+  labelBtnBack = environment.label_btn_back;
+  labelBtnEdit = environment.label_btn_edit;
+  labelBtnDelete = environment.label_btn_delete;
+  labelAddNewAlbum = environment.label_add_new_album;
+  labelListOfAlbum = environment.label_album_list;
+  labelBtnPrevious = environment.label_btn_previous;
+  labelBtnNext = environment.label_btn_next;
+  labelSearch = environment.label_search;
 
-  offset: number = 0;
-  count: number = 5;
+  offset: number = environment.offset;
+  count: number = environment.count;
+
+  albums!: Album[];
 
   searchForm!: FormGroup;
   title: string = "";
@@ -119,7 +86,7 @@ export class AlbumsComponent {
     if (!this.albums) {
       return false;
     }
-    return this.albums.length < 5;
+    return this.albums.length < this.count;
   }
 
   public delete(id: string) {

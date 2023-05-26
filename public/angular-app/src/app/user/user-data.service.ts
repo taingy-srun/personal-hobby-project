@@ -13,7 +13,7 @@ import { Credential } from './credential-model';
 })
 export class UserDataService {
 
-  _baseUrl: string = environment.API_BASE_URL + environment.USERS_ENDPOINT;
+  _baseUrl: string = environment.api_base_url + environment.endpoint_users;
 
   constructor(private _http: HttpClient) { }
 
@@ -22,7 +22,7 @@ export class UserDataService {
   }
 
   public login(user: Credential): Observable<User> {
-    const url = this._baseUrl + environment.LOGIN_ENDPOINT;
+    const url = this._baseUrl + environment.endpoint_login;
     return this._http.post<User>(url, user.toJSON());
   }
 }

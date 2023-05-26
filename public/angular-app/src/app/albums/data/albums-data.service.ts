@@ -2,16 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Album, Song } from './albums.component';
 import { environment } from 'src/environments/environment';
+import { Album } from './album-model';
+import { Song } from './song-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlbumsDataService {
 
-  _baseUrl: string = environment.API_BASE_URL + environment.ALBUMS_ENDPOINT;
-  _songsEndpoint: string = environment.SONGS_ENDPOINT;
+  _baseUrl: string = environment.api_base_url + environment.endpoint_albums;
+  _songsEndpoint: string = environment.endpoint_songs;
 
   constructor(private _http: HttpClient) {}
 

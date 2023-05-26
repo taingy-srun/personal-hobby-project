@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { AlbumsDataService } from '../albums/albums-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Song } from '../albums/albums.component';
+
+import { AlbumsDataService } from '../albums/data/albums-data.service';
+import { Song } from '../albums/data/song-model';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-edit-song',
@@ -10,6 +13,11 @@ import { Song } from '../albums/albums.component';
   styleUrls: ['./edit-song.component.css']
 })
 export class EditSongComponent {
+
+  labelEditingSong = environment.label_editing_song;
+  labelTitle = environment.label_title;
+  labelBtnSave = environment.label_btn_save;
+  labelBtnCancel = environment.label_btn_cancel;
 
   albumId!: string;
   songId!: string;
@@ -50,7 +58,7 @@ export class EditSongComponent {
 
   public save(){
     const song = {
-      title: this.songForm.value["title"],
+      title: this.songForm.value.title
     }
 
     this._albumService.updateOneSong(this.albumId, this.songId, song).subscribe((next) => {
