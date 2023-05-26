@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 const Album = mongoose.model(process.env.ALBUM_MODEL);
 const ResponseUtils = require("../utils/response.utils")
@@ -121,6 +120,7 @@ const deleteOne = function(req, res) {
     const songId = req.params.songId;
     Album.findById(id).exec()
         .then((album) => _checkAlbumExist(album))
+        .then((album) => _checkSongExist(album, songId))
         .then((album) => _deleteSongFromAlbum(album, songId))
         .then(() => _setResponse(response, process.env.HTTP_OK, {message: process.env.SONG_DELETED_MESSAGE}))
         .catch((error) => _setResponse(response, process.env.HTTP_NOT_FOUND, error))

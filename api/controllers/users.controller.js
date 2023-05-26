@@ -66,7 +66,7 @@ const _generateToken = function(user) {
     const sign = util.promisify(jwt.sign);
     return new Promise((resolve, reject) => {
         sign({name: user.name}, process.env.TOKEN_SECRET, {expiresIn: parseInt(process.env.TOKEN_EXPIRE_IN)})
-            .then((token) => resolve({token: token, user: user}))
+            .then((token) => resolve(token))
             .catch((error) => reject(error));
     });
 }
@@ -89,7 +89,7 @@ const getOne = function(req, res) {
         .then((user) =>  _comparePassword(req.body.password, user))
         .then(({isMatch, user}) => _isPasswordMatch(isMatch, user))
         .then((user) => _generateToken(user))
-        .then(({token, user}) => _setResponse(response, process.env.HTTP_OK, {name: user.name, token: token}))
+        .then((token) => _setResponse(response, process.env.HTTP_OK, {token: token}))
         .catch(() => _setResponse(response, process.env.HTTP_UNAUTHORIZED, {message: process.env.HTTP_UNAUTHORIZED_MESSAGE}))
         .finally(() => _sendResponse(res, response));
 }

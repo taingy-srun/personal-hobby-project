@@ -6,7 +6,7 @@ const app = express();
 const router = require("./api/routes");
 
 const server = app.listen(process.env.PORT, function() {
-    console.log("Server is running on port: ", server.address().port);
+    console.log(process.env.SERVER_RUNNING_MESSAGE, server.address().port);
 });
 
 app.use(express.json());
@@ -17,11 +17,11 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use("/api", function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-    res.header("Access-Control-Allow-Methods", "GET, DELETE, POST, PUT, PATCH");
-    res.header("Access-Control-Allow-Headers", "Origin, XRequested-With, Content-Type, Accept");
+app.use(process.env.API_ENDPOINT, function(req, res, next) {
+    res.header(process.env.CORS_ALLOW_ORIGIN_KEY, process.env.CORS_ALLOW_ORIGIN_VALUE);
+    res.header(process.env.CORS_ALLOW_METHOD_KEY, process.env.CORS_ALLOW_METHOD_VALUE);
+    res.header(process.env.CORS_ALLOW_HEADER_KEY, process.env.CORS_ALLOW_HEADER_VALUE);
     next();
 });
 
-app.use("/api", router);
+app.use(process.env.API_ENDPOINT, router);

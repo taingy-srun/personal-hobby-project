@@ -1,25 +1,26 @@
 const router = require("express").Router();
 const albumController = require("../controllers/album.controller");
 const songController = require("../controllers/song.controller");
+const authenticationController = require("../controllers/authentication.controller");
 
 router.route("/")
     .get(albumController.getAll)
-    .post(albumController.addOne);
+    .post(authenticationController.authenticate, albumController.addOne);
 
 router.route("/:id")
     .get(albumController.getOne)
-    .put(albumController.fullUpdateOne)
-    .patch(albumController.partialUpdateOne)
-    .delete(albumController.deleteOne);
+    .put(authenticationController.authenticate, albumController.fullUpdateOne)
+    .patch(authenticationController.authenticate, albumController.partialUpdateOne)
+    .delete(authenticationController.authenticate, albumController.deleteOne);
 
 router.route("/:id/songs")
     .get(songController.getAll)
-    .post(songController.addOne);
+    .post(authenticationController.authenticate, songController.addOne);
 
 router.route("/:id/songs/:songId")
     .get(songController.getOne)
-    .put(songController.fullUpdateOne)
-    .patch(songController.partialUpdateOne)
-    .delete(songController.deleteOne);
+    .put(authenticationController.authenticate, songController.fullUpdateOne)
+    .patch(authenticationController.authenticate, songController.partialUpdateOne)
+    .delete(authenticationController.authenticate, songController.deleteOne);
 
 module.exports = router;
