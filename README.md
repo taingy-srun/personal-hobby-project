@@ -10,9 +10,7 @@ Instruction:
 
 Application Features:
     
-1. CRUD on Albums
-    a. To operate on ADD, UPDATE, DELETE albums, you need to login first.
-2. CRUD on Songs
-    a. To operate on ADD, UPDATE, DELETE songs, you need to login first.
+1. CRUD on Albums [To operate on ADD, UPDATE, DELETE albums, you need to login first]
+2. CRUD on Songs [To operate on ADD, UPDATE, DELETE songs, you need to login first]
 3. Register
 4. Login
