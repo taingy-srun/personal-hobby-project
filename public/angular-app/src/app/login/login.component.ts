@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserDataService } from '../user/user-data.service';
 import { Router } from '@angular/router';
-import { SessionService } from '../session.service';
+import { AuthenticationService } from '../authentication.service';
+import { Credential } from '../user/credential-model';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
   username!: string;
   password!: string;
 
-  constructor(private _userService: UserDataService, private _sessionService: SessionService, private _router: Router) {}
+  constructor(private _userService: UserDataService, private _authenticationService: AuthenticationService, private _router: Router) {}
 
   ngOnInit() {
     this._initFrom();
@@ -45,11 +46,7 @@ export class LoginComponent {
   }
 
   private _login() {
-    const user = {
-      username: this.username,
-      password: this.password
-    }
-
+    const user = new Credential(this.username, this.password);
     this._userService.login(user).subscribe({
       next: (user) => this._onLoginSuccess(user),
       error: (error) => this._onLoginFailed(error)
@@ -71,7 +68,7 @@ export class LoginComponent {
   }
  
   private _onLoginSuccess(user: any) {
-    this._setSessionData(user);
+    this._setAuthenticationData(user);
     this._goHome();
   }
 
@@ -79,8 +76,7 @@ export class LoginComponent {
     this._router.navigate(["/"]);
   }
 
-  private _setSessionData(user: any) {
-    this._sessionService.setToken(user["token"]);
-    this._sessionService.setName(user["name"]);
+  private _setAuthenticationData(user: any) {
+    this._authenticationService.setToken(user["token"]);
   }
 }

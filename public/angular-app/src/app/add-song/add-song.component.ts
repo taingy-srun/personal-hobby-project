@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AlbumsDataService } from '../albums-data.service';
+import { AlbumsDataService } from '../albums/albums-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -24,7 +24,7 @@ export class AddSongComponent {
 
   public add(form: FormGroup){
     const newSong = {
-      title: form.value["title"]
+      title: form.value.title
     }
 
     this.albumId = this._route.snapshot.params["albumId"];

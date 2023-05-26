@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AlbumsDataService } from '../albums-data.service';
+import { AlbumsDataService } from '../albums/albums-data.service';
 import { Album } from '../albums/albums.component';
 import { Router } from '@angular/router';
 

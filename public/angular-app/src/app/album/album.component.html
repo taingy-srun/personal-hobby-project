@@ -7,13 +7,13 @@
             <thead>
                 <tr>
                 <th scope="col">Title</th>
-                <th scope="col" *ngIf="!isLogin()">Actions</th>
+                <th scope="col" *ngIf="isLoggedIn()">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let song of album.songs" class="table-dark">
                 <th scope="row">{{ song.title }}</th>
-                <td *ngIf="!isLogin()">
+                <td *ngIf="isLoggedIn()">
                     <button class="btn btn-link" routerLink="/albums/{{album._id}}/songs/{{song._id}}/edit"><i>Edit</i></button>
                     <button class="btn btn-link" (click)="deleteOneSong(song._id)"><i>Delete</i></button>
                 </td>
@@ -23,5 +23,5 @@
     </div>
     <button class="btn btn-light" routerLink="/albums"> < Back</button>
     &nbsp;
-    <button *ngIf="!isLogin()" class="btn btn-primary" routerLink="/albums/{{album._id}}/newSong">Add New Song</button>
+    <button *ngIf="isLoggedIn()" class="btn btn-primary" routerLink="/albums/{{album._id}}/newSong">Add New Song</button>
 </div>

@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserDataService } from '../user/user-data.service';
 import { Router } from '@angular/router';
+import { User } from '../user/user-model';
 
 @Component({
   selector: 'app-register',
@@ -18,18 +19,17 @@ export class RegisterComponent {
   password!: string;
   confirmPassword!: string;
 
+  successMessage: string = "";
+  errorMessage: string = "";
+  isSuccess: boolean = false;
+  isError: boolean = false;
 
   constructor(private _userService: UserDataService, private _router: Router) {}
 
   ngOnInit() { }
 
   private _register() {
-    const user = {
-      name: this.name,
-      username: this.username,
-      password: this.password
-    }
-
+    const user = new User(this.name, this.username, this.password);
     this._userService.register(user).subscribe({
       next: (user) =>  this._onRegisterSuccess(),
       error: (error) => this._onRegisterFailed(error)
@@ -72,17 +72,20 @@ export class RegisterComponent {
   }
 
   private _onRegisterFailed(error: any) {
-    alert(JSON.stringify(error["error"]));
+    console.log(error);
+  
+    this.successMessage = "";
+    this.errorMessage = "Failed to register!";
+    this.isSuccess = false;
+    this.isError = true;
   }
 
   private _onRegisterSuccess() {
-    alert("User register successful!");
     this._clearForm();
-    this.gotoLogin();
+    this.successMessage = "User register successful!";
+    this.errorMessage = "";
+    this.isSuccess = true;
+    this.isError = false;
   }
 
-
-  private gotoLogin() {
-    this._router.navigate(["/login"]);
-  }
 }

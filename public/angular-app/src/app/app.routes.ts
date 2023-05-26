@@ -7,6 +7,7 @@ import { EditSongComponent } from "./edit-song/edit-song.component";
 import { ErrorPageComponent } from "./error-page/error-page.component";
 import { HomeComponent } from "./home/home.component";
 import { LoginComponent } from "./login/login.component";
+import { ProfileComponent } from "./profile/profile.component";
 import { RegisterComponent } from "./register/register.component";
 
 export const AppRouter = [
@@ -43,8 +44,8 @@ export const AppRouter = [
         component: RegisterComponent
     },
     {
-        path: "login",
-        component: LoginComponent
+        path: "profile",
+        component: ProfileComponent
     },
     {
         path: "**",

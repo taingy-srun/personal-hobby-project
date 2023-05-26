@@ -1,4 +1,6 @@
 <div class="album form-group col-sm-4">
+    <div *ngIf="isSuccess" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="isError" class="alert alert-danger">{{ errorMessage }}</div>
     <h2>Registration Form</h2><br/>
     <form #registerForm="ngForm" (ngSubmit)="register()">
         <label class="form-label">Name:</label>

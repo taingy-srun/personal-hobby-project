@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SessionService } from '../session.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-profile',
@@ -8,14 +8,10 @@ import { SessionService } from '../session.service';
 })
 export class ProfileComponent {
 
-  constructor(private _sessionService: SessionService) {}
+  constructor(private _authenticationService: AuthenticationService) {}
 
   public getName(): string {
-    return this._sessionService.getName();
+    return this._authenticationService.getName();
   }
 
-  public logout() {
-    this._sessionService.setName("");
-    this._sessionService.setToken("");
-  }
 }

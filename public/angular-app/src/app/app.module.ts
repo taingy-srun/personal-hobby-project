@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -20,6 +20,9 @@ import { AddSongComponent } from './add-song/add-song.component';
 import { EditAlbumComponent } from './edit-album/edit-album.component';
 import { EditSongComponent } from './edit-song/edit-song.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AuthenticationInterceptor } from './authentication.interceptor';
+import { JwtModule } from '@auth0/angular-jwt';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -37,16 +40,22 @@ import { ProfileComponent } from './profile/profile.component';
     AddSongComponent,
     EditAlbumComponent,
     EditSongComponent,
-    ProfileComponent
+    ProfileComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(AppRouter),
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('token'),
+      },
+    }),
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

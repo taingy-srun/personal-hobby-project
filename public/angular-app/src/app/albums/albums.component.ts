@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AlbumsDataService } from '../albums-data.service';
-import { SessionService } from '../session.service';
+import { AlbumsDataService } from './albums-data.service';
+import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup } from '@angular/forms';
 
 export class Song {
@@ -67,7 +67,7 @@ export class AlbumsComponent {
   searchForm!: FormGroup;
   title: string = "";
 
-  constructor(private _albumService: AlbumsDataService, private _sessionService: SessionService) {}
+  constructor(private _albumService: AlbumsDataService, private _authenticationService: AuthenticationService) {}
 
   ngOnInit(): void {
     this.initFrom();
@@ -140,11 +140,11 @@ export class AlbumsComponent {
   }
 
   public search(){
-    this.title = this.searchForm.value["title"];
+    this.title = this.searchForm.value.title;
     this.getAlbums();
   }
 
-  public isLogin() {
-    return !this._sessionService.isLogin();
+  public isLoggedIn() {
+    return this._authenticationService.isLoggedIn();
   }
 }

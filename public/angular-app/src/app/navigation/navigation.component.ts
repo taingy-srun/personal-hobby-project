@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SessionService } from '../session.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-navigation',
@@ -8,10 +8,10 @@ import { SessionService } from '../session.service';
 })
 export class NavigationComponent {
 
-  constructor(private _sessionService: SessionService) {}
+  constructor(private _authenticationService: AuthenticationService) {}
 
-  public isLogin() {
-    return !this._sessionService.isLogin();
+  public isLoggedIn() {
+    return this._authenticationService.isLoggedIn();
   }
 
 }

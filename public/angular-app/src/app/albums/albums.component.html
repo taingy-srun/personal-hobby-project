@@ -2,7 +2,7 @@
     <form class="col-sm-4" [formGroup]="searchForm" (ngSubmit)="search()">
         <label class="form-label">Search:</label>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" formControlName="title" placeholder="Title" aria-describedby="button-addon2">
+            <input type="search" class="form-control" formControlName="title" placeholder="Title" aria-describedby="button-addon2">
             <button class="btn btn-outline-light" type="submit" id="button-addon2">Search</button>
         </div>
     </form>
@@ -13,14 +13,14 @@
                 <tr>
                 <th scope="col">Title</th>
                 <th scope="col">Released Date</th>
-                <th scope="col" *ngIf="!isLogin()">Actions</th>
+                <th scope="col" *ngIf="isLoggedIn()">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let album of albums" class="table-dark">
                 <th scope="row"><a routerLink="/albums/{{album._id}}">{{ album.title }}</a></th>
                 <td>{{ album.releaseDate | date: "dd MMMM yyyy"}}</td>
-                <td *ngIf="!isLogin()">
+                <td *ngIf="isLoggedIn()">
                     <button class="btn btn-link" routerLink="/albums/{{album._id}}/edit"><i>Edit</i></button>
                     <button class="btn btn-link" (click)="delete(album._id)"><i>Delete</i></button>
                 </td>
@@ -32,5 +32,5 @@
     &nbsp;
     <button class="btn btn-light" (click)="getNextPage()" [disabled]="disableNextButton()">Next ></button>
     &nbsp;
-    <button *ngIf="!isLogin()" class="btn btn-primary" routerLink="/newAlbum">Add New Album</button>
+    <button *ngIf="isLoggedIn()" class="btn btn-primary" routerLink="/newAlbum">Add New Album</button>
 </div>

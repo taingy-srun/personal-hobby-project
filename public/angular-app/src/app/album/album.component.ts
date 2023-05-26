@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Album } from '../albums/albums.component';
-import { AlbumsDataService } from '../albums-data.service';
+import { AlbumsDataService } from '../albums/albums-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { SessionService } from '../session.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-album',
@@ -13,7 +13,7 @@ export class AlbumComponent {
 
   album!: Album;
 
-  constructor(private _albumService: AlbumsDataService, private _route: ActivatedRoute, private _sessionService: SessionService) {}
+  constructor(private _albumService: AlbumsDataService, private _route: ActivatedRoute, private _authenticationService: AuthenticationService) {}
 
   ngOnInit() {
     this.getAlbum();
@@ -27,9 +27,6 @@ export class AlbumComponent {
         },
         error: (err) => {
           console.log(err);
-        },
-        complete: () => {
-          console.log("On complete");
         }
     });
   }
@@ -46,8 +43,8 @@ export class AlbumComponent {
     });
   }
 
-  public isLogin() {
-    return !this._sessionService.isLogin();
+  public isLoggedIn() {
+    return this._authenticationService.isLoggedIn();
   }
 
 }
