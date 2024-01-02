@@ -1,8 +1,8 @@
-# The-PINK
+# The-PINK Personal Hobby Project
 
 This is my Personal Hobby Project for MWA course.
 
-This project is about the operations on albums and songs of my favorite K-POP band called `BLACKPINK`.
+This project is about the operations on albums and songs of the singer's band.
 
 This project was built by using MEAN stack
 
