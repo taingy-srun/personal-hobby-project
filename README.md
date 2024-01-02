@@ -2,7 +2,7 @@
 
 This is my Personal Hobby Project for MWA course.
 
-This project is about the operations on albums and songs of the singer's band.
+This project is about the operations on albums and songs of my favourite bands.
 
 This project was built by using MEAN stack
 
