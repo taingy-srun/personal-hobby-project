@@ -1,25 +1,43 @@
-# The-PINK Personal Hobby Project
+# 🎵 The PINK – Personal Hobby Project  
 
-This is my Personal Hobby Project for MWA course.
+**The PINK** is a personal hobby project focused on managing albums and songs from my favorite bands.  
+It allows users to perform operations such as adding, updating, and deleting albums or songs through a simple and interactive interface.  
 
-This project is about the operations on albums and songs of my favourite bands.
+---
 
-This project was built by using MEAN stack
+## 🧩 Tech Stack  
 
-1. MongoDB
-2. Angular
-3. Express
-4. Node.js
+This project is built using the **MEAN Stack**:
 
-## To startup the project:
+- **MongoDB** – Database for storing albums, songs, and user information  
+- **Express.js** – Backend framework for handling API requests  
+- **Angular** – Frontend framework for building the user interface  
+- **Node.js** – Runtime environment for executing server-side code  
 
-1. Run `npm install` in the root directory and in `public/angular-app`
-2. Run `npm start`  it will be started both frontend and backend servers.
+---
 
+## 🚀 Getting Started  
 
-## Application Features:
-    
-1. CRUD on Albums [To ADD, UPDATE, DELETE albums, you need to login first]
-2. CRUD on Songs [To ADD, UPDATE, DELETE songs, you need to login first]
-3. Register
-4. Login
+1. Run the following command in the **root directory** and in **`public/angular-app`** to install dependencies:  
+   ```bash
+   npm install
+   ```
+
+2. Start the application with:
+    ```bash
+   npm start
+   ```
+    This will launch both the frontend and backend servers.
+
+# 🎧 Application Features
+1. Albums Management
+- Perform full CRUD operations (Create, Read, Update, Delete) on albums.
+- Login is required to add, update, or delete albums.
+
+2. Songs Management
+- Perform full CRUD operations (Create, Read, Update, Delete) on songs.
+- Login is required to add, update, or delete songs.
+
+3. User Authentication
+- Register a new account.
+- Securely log in to access protected features.
